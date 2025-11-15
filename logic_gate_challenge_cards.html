@@ -1,0 +1,1062 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Logic Gate Game Design Challenge Cards</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        h1 {
+            text-align: center;
+            color: white;
+            margin-bottom: 15px;
+            font-size: 2.5em;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+            font-size: 1.2em;
+        }
+        
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+        
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.3);
+        }
+        
+        .btn-easy {
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+            color: white;
+        }
+        
+        .btn-standard {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+        }
+        
+        .btn-advanced {
+            background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+            color: #333;
+        }
+        
+        .btn-all {
+            background: white;
+            color: #667eea;
+        }
+        
+        .btn-print {
+            background: #333;
+            color: white;
+        }
+        
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            transition: transform 0.3s;
+            page-break-inside: avoid;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 3px solid;
+        }
+        
+        .card.easy .card-header { border-color: #11998e; }
+        .card.standard .card-header { border-color: #f5576c; }
+        .card.advanced .card-header { border-color: #fa709a; }
+        
+        .card-title {
+            font-size: 1.4em;
+            font-weight: bold;
+            color: #333;
+        }
+        
+        .difficulty-badge {
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 0.9em;
+            color: white;
+        }
+        
+        .easy .difficulty-badge { background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%); }
+        .standard .difficulty-badge { background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); }
+        .advanced .difficulty-badge { background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); color: #333; }
+        
+        .game-scenario {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            border-left: 4px solid;
+        }
+        
+        .card.easy .game-scenario { border-color: #11998e; }
+        .card.standard .game-scenario { border-color: #f5576c; }
+        .card.advanced .game-scenario { border-color: #fa709a; }
+        
+        .game-scenario h3 {
+            color: #667eea;
+            margin-bottom: 8px;
+            font-size: 1.1em;
+        }
+        
+        .logic-gates {
+            background: #e8eaf6;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+        
+        .logic-gates strong {
+            color: #667eea;
+        }
+        
+        .truth-table {
+            margin: 15px 0;
+        }
+        
+        .truth-table table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9em;
+        }
+        
+        .truth-table th, .truth-table td {
+            border: 2px solid #ddd;
+            padding: 8px;
+            text-align: center;
+        }
+        
+        .truth-table th {
+            background: #667eea;
+            color: white;
+            font-weight: bold;
+        }
+        
+        .truth-table td {
+            background: white;
+        }
+        
+        .design-requirements {
+            background: #fff3e0;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            border-left: 4px solid #ff9800;
+        }
+        
+        .design-requirements h3 {
+            color: #f57c00;
+            margin-bottom: 10px;
+            font-size: 1em;
+        }
+        
+        .design-requirements ul {
+            margin-left: 20px;
+        }
+        
+        .design-requirements li {
+            margin: 5px 0;
+            color: #555;
+        }
+        
+        .hints {
+            background: #e1f5fe;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 0.95em;
+            color: #01579b;
+            border-left: 4px solid #0288d1;
+        }
+        
+        .hints strong {
+            color: #0277bd;
+        }
+        
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+            
+            .controls {
+                display: none;
+            }
+            
+            h1, .subtitle {
+                color: #333;
+            }
+            
+            .cards-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .card {
+                margin-bottom: 30px;
+                box-shadow: none;
+                border: 2px solid #ddd;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .cards-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            h1 {
+                font-size: 1.8em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎮 Logic Gate Game Design Challenges</h1>
+        <p class="subtitle">Design PLDs (Programmable Logic Devices) for Game Mechanics</p>
+        
+        <div class="controls">
+            <button class="btn btn-easy" onclick="filterCards('easy')">Show EASY (1 Gate)</button>
+            <button class="btn btn-standard" onclick="filterCards('standard')">Show STANDARD (2 Gates)</button>
+            <button class="btn btn-advanced" onclick="filterCards('advanced')">Show ADVANCED (3 Gates)</button>
+            <button class="btn btn-all" onclick="filterCards('all')">Show All Challenges</button>
+            <button class="btn btn-print" onclick="window.print()">🖨️ Print Cards</button>
+        </div>
+        
+        <div class="cards-grid" id="cardsGrid">
+            
+            <!-- EASY CHALLENGE 1: NOT GATE -->
+            <div class="card easy" data-level="easy">
+                <div class="card-header">
+                    <div class="card-title">Night Mode Switcher</div>
+                    <div class="difficulty-badge">EASY</div>
+                </div>
+                
+                <div class="game-scenario">
+                    <h3>🌙 Game Scenario</h3>
+                    <p>Your adventure game has a day/night cycle. When it's DAYTIME, dangerous monsters appear. When it's NIGHTTIME, the monsters should disappear (sleep).</p>
+                </div>
+                
+                <div class="logic-gates">
+                    <strong>Logic Gate Used:</strong> NOT Gate (Inverter)
+                </div>
+                
+                <div class="truth-table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Daytime Sensor<br>(Input A)</th>
+                                <th>Monsters Active<br>(Output)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>1 (Day)</td><td>0 (Sleep)</td></tr>
+                            <tr><td>0 (Night)</td><td>1 (Active)</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="design-requirements">
+                    <h3>📋 Design Requirements</h3>
+                    <ul>
+                        <li>Create a PLD that inverts the day/night signal</li>
+                        <li>Draw a circuit diagram showing input and output</li>
+                        <li>Label your NOT gate clearly</li>
+                        <li>Show how monsters appear at night only</li>
+                    </ul>
+                </div>
+                
+                <div class="hints">
+                    <strong>💡 Hint:</strong> A NOT gate does the opposite! If the input is HIGH (1), output is LOW (0). Think about how a nightlight works in real life.
+                </div>
+            </div>
+            
+            <!-- EASY CHALLENGE 2: OR GATE -->
+            <div class="card easy" data-level="easy">
+                <div class="card-header">
+                    <div class="card-title">Multi-Player Door Unlock</div>
+                    <div class="difficulty-badge">EASY</div>
+                </div>
+                
+                <div class="game-scenario">
+                    <h3>🚪 Game Scenario</h3>
+                    <p>In a co-op game, a magical door should unlock if EITHER Player 1 OR Player 2 steps on their pressure plate. Any player can open it!</p>
+                </div>
+                
+                <div class="logic-gates">
+                    <strong>Logic Gate Used:</strong> OR Gate
+                </div>
+                
+                <div class="truth-table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Player 1 Plate<br>(Input A)</th>
+                                <th>Player 2 Plate<br>(Input B)</th>
+                                <th>Door Unlocked<br>(Output)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>0</td><td>0</td><td>0</td></tr>
+                            <tr><td>0</td><td>1</td><td>1</td></tr>
+                            <tr><td>1</td><td>0</td><td>1</td></tr>
+                            <tr><td>1</td><td>1</td><td>1</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="design-requirements">
+                    <h3>📋 Design Requirements</h3>
+                    <ul>
+                        <li>Design a PLD with 2 inputs (pressure plates)</li>
+                        <li>Show how the door unlocks if ANY player activates</li>
+                        <li>Draw both players and the door mechanism</li>
+                        <li>Label your OR gate in the circuit</li>
+                    </ul>
+                </div>
+                
+                <div class="hints">
+                    <strong>💡 Hint:</strong> OR means "at least one." The door opens if Player 1 OR Player 2 OR both activate their plates!
+                </div>
+            </div>
+            
+            <!-- EASY CHALLENGE 3: AND GATE -->
+            <div class="card easy" data-level="easy">
+                <div class="card-header">
+                    <div class="card-title">Two-Key Treasure Chest</div>
+                    <div class="difficulty-badge">EASY</div>
+                </div>
+                
+                <div class="game-scenario">
+                    <h3>💎 Game Scenario</h3>
+                    <p>A valuable treasure chest requires TWO keys to open. The player must have collected BOTH the Golden Key AND the Silver Key. Having just one key won't work!</p>
+                </div>
+                
+                <div class="logic-gates">
+                    <strong>Logic Gate Used:</strong> AND Gate
+                </div>
+                
+                <div class="truth-table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Golden Key<br>(Input A)</th>
+                                <th>Silver Key<br>(Input B)</th>
+                                <th>Chest Opens<br>(Output)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>0</td><td>0</td><td>0</td></tr>
+                            <tr><td>0</td><td>1</td><td>0</td></tr>
+                            <tr><td>1</td><td>0</td><td>0</td></tr>
+                            <tr><td>1</td><td>1</td><td>1</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="design-requirements">
+                    <h3>📋 Design Requirements</h3>
+                    <ul>
+                        <li>Create a PLD that checks for BOTH keys</li>
+                        <li>Show the chest stays locked unless both keys present</li>
+                        <li>Draw the key inputs and chest lock output</li>
+                        <li>Clearly label your AND gate</li>
+                    </ul>
+                </div>
+                
+                <div class="hints">
+                    <strong>💡 Hint:</strong> AND means "all conditions must be true." Think of it like needing both a username AND password to log in!
+                </div>
+            </div>
+            
+            <!-- EASY CHALLENGE 4: XOR GATE -->
+            <div class="card easy" data-level="easy">
+                <div class="card-header">
+                    <div class="card-title">Light Switch Puzzle</div>
+                    <div class="difficulty-badge">EASY</div>
+                </div>
+                
+                <div class="game-scenario">
+                    <h3>💡 Game Scenario</h3>
+                    <p>A puzzle room has two light switches. The light turns ON when exactly ONE switch is flipped, but turns OFF if both switches are in the same position (both up or both down).</p>
+                </div>
+                
+                <div class="logic-gates">
+                    <strong>Logic Gate Used:</strong> XOR Gate (Exclusive OR)
+                </div>
+                
+                <div class="truth-table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Switch 1<br>(Input A)</th>
+                                <th>Switch 2<br>(Input B)</th>
+                                <th>Light ON<br>(Output)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>0</td><td>0</td><td>0</td></tr>
+                            <tr><td>0</td><td>1</td><td>1</td></tr>
+                            <tr><td>1</td><td>0</td><td>1</td></tr>
+                            <tr><td>1</td><td>1</td><td>0</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="design-requirements">
+                    <h3>📋 Design Requirements</h3>
+                    <ul>
+                        <li>Design a PLD where only ONE switch activates light</li>
+                        <li>Show what happens when both switches match</li>
+                        <li>Draw the two switches and the light output</li>
+                        <li>Label your XOR gate in the circuit</li>
+                    </ul>
+                </div>
+                
+                <div class="hints">
+                    <strong>💡 Hint:</strong> XOR means "one or the other, but not both." It's like choosing between ice cream OR cake - you can't have both!
+                </div>
+            </div>
+            
+            <!-- STANDARD CHALLENGE 1: AND + NOT -->
+            <div class="card standard" data-level="standard">
+                <div class="card-header">
+                    <div class="card-title">Stealth Mission Alarm</div>
+                    <div class="difficulty-badge">STANDARD</div>
+                </div>
+                
+                <div class="game-scenario">
+                    <h3>🕵️ Game Scenario</h3>
+                    <p>You're designing a stealth game. The alarm should sound if the player is detected by a guard AND is NOT wearing a disguise. If they have a disguise, they're safe even if spotted!</p>
+                </div>
+                
+                <div class="logic-gates">
+                    <strong>Logic Gates Used:</strong> AND Gate + NOT Gate
+                </div>
+                
+                <div class="truth-table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Guard Spots<br>(Input A)</th>
+                                <th>Has Disguise<br>(Input B)</th>
+                                <th>Alarm Sounds<br>(Output)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>0</td><td>0</td><td>0</td></tr>
+                            <tr><td>0</td><td>1</td><td>0</td></tr>
+                            <tr><td>1</td><td>0</td><td>1</td></tr>
+                            <tr><td>1</td><td>1</td><td>0</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="design-requirements">
+                    <h3>📋 Design Requirements</h3>
+                    <ul>
+                        <li>First gate: NOT the disguise signal</li>
+                        <li>Second gate: AND the "spotted" with "no disguise"</li>
+                        <li>Show how disguise protects even when spotted</li>
+                        <li>Draw complete circuit with both gates labeled</li>
+                        <li>Include 2 inputs and 1 output</li>
+                    </ul>
+                </div>
+                
+                <div class="hints">
+                    <strong>💡 Hint:</strong> Think about the order! First invert the disguise (NOT), then check if spotted AND no disguise (AND). Chain the gates together!
+                </div>
+            </div>
+            
+            <!-- STANDARD CHALLENGE 2: OR + AND -->
+            <div class="card standard" data-level="standard">
+                <div class="card-header">
+                    <div class="card-title">Power-Up Combo System</div>
+                    <div class="difficulty-badge">STANDARD</div>
+                </div>
+                
+                <div class="game-scenario">
+                    <h3>⚡ Game Scenario</h3>
+                    <p>In a fighting game, a special SUPER MOVE activates only when: (Player has full health OR full energy) AND they press the special button combo.</p>
+                </div>
+                
+                <div class="logic-gates">
+                    <strong>Logic Gates Used:</strong> OR Gate + AND Gate
+                </div>
+                
+                <div class="truth-table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Full Health<br>(Input A)</th>
+                                <th>Full Energy<br>(Input B)</th>
+                                <th>Button Pressed<br>(Input C)</th>
+                                <th>Super Move<br>(Output)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>0</td><td>0</td><td>0</td><td>0</td></tr>
+                            <tr><td>0</td><td>0</td><td>1</td><td>0</td></tr>
+                            <tr><td>1</td><td>0</td><td>1</td><td>1</td></tr>
+                            <tr><td>0</td><td>1</td><td>1</td><td>1</td></tr>
+                            <tr><td>1</td><td>1</td><td>1</td><td>1</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="design-requirements">
+                    <h3>📋 Design Requirements</h3>
+                    <ul>
+                        <li>First gate: OR the health and energy signals</li>
+                        <li>Second gate: AND the result with button press</li>
+                        <li>Show all 3 inputs clearly</li>
+                        <li>Draw circuit showing gate connections</li>
+                        <li>Explain why pressing button alone won't work</li>
+                    </ul>
+                </div>
+                
+                <div class="hints">
+                    <strong>💡 Hint:</strong> The OR gate checks if you're powered up (either way). Then AND checks if you're powered up AND pressed the button!
+                </div>
+            </div>
+            
+            <!-- STANDARD CHALLENGE 3: XOR + NOT -->
+            <div class="card standard" data-level="standard">
+                <div class="card-header">
+                    <div class="card-title">Platform Switch Puzzle</div>
+                    <div class="difficulty-badge">STANDARD</div>
+                </div>
+                
+                <div class="game-scenario">
+                    <h3>🎯 Game Scenario</h3>
+                    <p>A platform game has two elevators. When both elevators are at DIFFERENT floors (one up, one down), a bridge appears. But the bridge should only appear during DAYTIME. At night, no bridge!</p>
+                </div>
+                
+                <div class="logic-gates">
+                    <strong>Logic Gates Used:</strong> XOR Gate + AND Gate
+                </div>
+                
+                <div class="truth-table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Elevator 1<br>(Input A)</th>
+                                <th>Elevator 2<br>(Input B)</th>
+                                <th>Daytime<br>(Input C)</th>
+                                <th>Bridge Appears<br>(Output)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>0</td><td>0</td><td>1</td><td>0</td></tr>
+                            <tr><td>0</td><td>1</td><td>1</td><td>1</td></tr>
+                            <tr><td>1</td><td>0</td><td>1</td><td>1</td></tr>
+                            <tr><td>1</td><td>1</td><td>1</td><td>0</td></tr>
+                            <tr><td>0</td><td>1</td><td>0</td><td>0</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="design-requirements">
+                    <h3>📋 Design Requirements</h3>
+                    <ul>
+                        <li>First gate: XOR the two elevator positions</li>
+                        <li>Second gate: AND the XOR result with daytime</li>
+                        <li>Show why matching elevators won't trigger bridge</li>
+                        <li>Draw 3 inputs connected to your logic circuit</li>
+                        <li>Label each gate and explain the flow</li>
+                    </ul>
+                </div>
+                
+                <div class="hints">
+                    <strong>💡 Hint:</strong> XOR checks if elevators are different. Then AND makes sure it's also daytime. Two conditions working together!
+                </div>
+            </div>
+            
+            <!-- STANDARD CHALLENGE 4: OR + NOT -->
+            <div class="card standard" data-level="standard">
+                <div class="card-header">
+                    <div class="card-title">Safe Zone Detector</div>
+                    <div class="difficulty-badge">STANDARD</div>
+                </div>
+                
+                <div class="game-scenario">
+                    <h3>🛡️ Game Scenario</h3>
+                    <p>In a survival game, the player is SAFE when they are in a shelter OR have a shield equipped. But the "DANGER ALERT" should sound when they are NOT safe.</p>
+                </div>
+                
+                <div class="logic-gates">
+                    <strong>Logic Gates Used:</strong> OR Gate + NOT Gate
+                </div>
+                
+                <div class="truth-table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>In Shelter<br>(Input A)</th>
+                                <th>Has Shield<br>(Input B)</th>
+                                <th>Danger Alert<br>(Output)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>0</td><td>0</td><td>1</td></tr>
+                            <tr><td>0</td><td>1</td><td>0</td></tr>
+                            <tr><td>1</td><td>0</td><td>0</td></tr>
+                            <tr><td>1</td><td>1</td><td>0</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="design-requirements">
+                    <h3>📋 Design Requirements</h3>
+                    <ul>
+                        <li>First gate: OR checks if protected (either way)</li>
+                        <li>Second gate: NOT inverts the protected signal</li>
+                        <li>Show when danger alert sounds</li>
+                        <li>Draw circuit with proper gate connections</li>
+                        <li>Explain why alert turns OFF when safe</li>
+                    </ul>
+                </div>
+                
+                <div class="hints">
+                    <strong>💡 Hint:</strong> OR finds safety (shelter OR shield). Then NOT flips it to create the danger signal. Think backwards from safety!
+                </div>
+            </div>
+            
+            <!-- ADVANCED CHALLENGE 1 -->
+            <div class="card advanced" data-level="advanced">
+                <div class="card-header">
+                    <div class="card-title">Boss Battle Weakness System</div>
+                    <div class="difficulty-badge">ADVANCED</div>
+                </div>
+                
+                <div class="game-scenario">
+                    <h3>⚔️ Game Scenario</h3>
+                    <p>A boss enemy has a complex weakness: Take damage when (Player has fire weapon OR ice weapon) AND boss shield is down AND it's NOT raining (rain puts out fire).</p>
+                </div>
+                
+                <div class="logic-gates">
+                    <strong>Logic Gates Used:</strong> OR + AND + NOT (3 gates)
+                </div>
+                
+                <div class="truth-table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Fire Weapon<br>(A)</th>
+                                <th>Ice Weapon<br>(B)</th>
+                                <th>Shield Down<br>(C)</th>
+                                <th>Raining<br>(D)</th>
+                                <th>Boss Damaged<br>(Output)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>1</td><td>0</td><td>1</td><td>0</td><td>1</td></tr>
+                            <tr><td>0</td><td>1</td><td>1</td><td>0</td><td>1</td></tr>
+                            <tr><td>1</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
+                            <tr><td>1</td><td>0</td><td>1</td><td>1</td><td>0</td></tr>
+                            <tr><td>0</td><td>0</td><td>1</td><td>0</td><td>0</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="design-requirements">
+                    <h3>📋 Design Requirements</h3>
+                    <ul>
+                        <li>Gate 1: OR checks for any special weapon</li>
+                        <li>Gate 2: NOT inverts the rain signal</li>
+                        <li>Gate 3: AND combines weapon, shield, and weather</li>
+                        <li>Show all 4 inputs in your design</li>
+                        <li>Create a complete truth table</li>
+                        <li>Explain how each condition matters</li>
+                    </ul>
+                </div>
+                
+                <div class="hints">
+                    <strong>💡 Hint:</strong> Work in stages: (1) Do you have a weapon? (2) Is it NOT raining? (3) Is shield down? Then AND everything together at the end!
+                </div>
+            </div>
+            
+            <!-- ADVANCED CHALLENGE 2 -->
+            <div class="card advanced" data-level="advanced">
+                <div class="card-header">
+                    <div class="card-title">Secret Door Triple Lock</div>
+                    <div class="difficulty-badge">ADVANCED</div>
+                </div>
+                
+                <div class="game-scenario">
+                    <h3>🔐 Game Scenario</h3>
+                    <p>A secret door opens when: Player has the Red Crystal AND (Blue Key OR Green Key) AND it's NOT a full moon. The door won't open during full moons no matter what!</p>
+                </div>
+                
+                <div class="logic-gates">
+                    <strong>Logic Gates Used:</strong> OR + AND + NOT (3 gates)
+                </div>
+                
+                <div class="truth-table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Red Crystal<br>(A)</th>
+                                <th>Blue Key<br>(B)</th>
+                                <th>Green Key<br>(C)</th>
+                                <th>Full Moon<br>(D)</th>
+                                <th>Door Opens<br>(Output)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>1</td><td>1</td><td>0</td><td>0</td><td>1</td></tr>
+                            <tr><td>1</td><td>0</td><td>1</td><td>0</td><td>1</td></tr>
+                            <tr><td>1</td><td>1</td><td>1</td><td>0</td><td>1</td></tr>
+                            <tr><td>1</td><td>1</td><td>0</td><td>1</td><td>0</td></tr>
+                            <tr><td>0</td><td>1</td><td>1</td><td>0</td><td>0</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="design-requirements">
+                    <h3>📋 Design Requirements</h3>
+                    <ul>
+                        <li>Gate 1: OR checks for either key</li>
+                        <li>Gate 2: AND combines crystal with key result</li>
+                        <li>Gate 3: NOT inverts moon, then AND with previous</li>
+                        <li>Draw all 4 inputs flowing through logic</li>
+                        <li>Show why full moon blocks everything</li>
+                        <li>Label each gate clearly in your circuit</li>
+                    </ul>
+                </div>
+                
+                <div class="hints">
+                    <strong>💡 Hint:</strong> Build in layers: First OR the keys, then AND with crystal, finally check NOT full moon and AND again. It's like a security system with multiple checks!
+                </div>
+            </div>
+            
+            <!-- ADVANCED CHALLENGE 3 -->
+            <div class="card advanced" data-level="advanced">
+                <div class="card-header">
+                    <div class="card-title">Racing Game Boost System</div>
+                    <div class="difficulty-badge">ADVANCED</div>
+                </div>
+                
+                <div class="game-scenario">
+                    <h3>🏎️ Game Scenario</h3>
+                    <p>In a racing game, TURBO BOOST activates when: (Speed above 100 OR on boost pad) AND nitro tank NOT empty AND (NOT in collision). All conditions must align!</p>
+                </div>
+                
+                <div class="logic-gates">
+                    <strong>Logic Gates Used:</strong> OR + NOT + AND (3 gates)
+                </div>
+                
+                <div class="truth-table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Speed>100<br>(A)</th>
+                                <th>Boost Pad<br>(B)</th>
+                                <th>Nitro Empty<br>(C)</th>
+                                <th>Collision<br>(D)</th>
+                                <th>Turbo Active<br>(Output)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>1</td><td>0</td><td>0</td><td>0</td><td>1</td></tr>
+                            <tr><td>0</td><td>1</td><td>0</td><td>0</td><td>1</td></tr>
+                            <tr><td>1</td><td>1</td><td>1</td><td>0</td><td>0</td></tr>
+                            <tr><td>1</td><td>0</td><td>0</td><td>1</td><td>0</td></tr>
+                            <tr><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="design-requirements">
+                    <h3>📋 Design Requirements</h3>
+                    <ul>
+                        <li>Gate 1: OR for speed or boost pad conditions</li>
+                        <li>Gate 2: NOT for nitro empty and collision states</li>
+                        <li>Gate 3: AND combines all safe conditions</li>
+                        <li>Show 4 inputs and how they flow through gates</li>
+                        <li>Explain why running out of nitro stops boost</li>
+                        <li>Demonstrate collision safety cutoff</li>
+                    </ul>
+                </div>
+                
+                <div class="hints">
+                    <strong>💡 Hint:</strong> Think safety first! You need speed (OR), fuel (NOT empty), and safety (NOT crashing). Multiple NOT gates can work together with AND!
+                </div>
+            </div>
+            
+            <!-- ADVANCED CHALLENGE 4 -->
+            <div class="card advanced" data-level="advanced">
+                <div class="card-header">
+                    <div class="card-title">Multiplayer Victory Condition</div>
+                    <div class="difficulty-badge">ADVANCED</div>
+                </div>
+                
+                <div class="game-scenario">
+                    <h3>🏆 Game Scenario</h3>
+                    <p>Team wins when: (Player 1 OR Player 2 reaches goal) AND flag is captured AND opposing team does NOT have power-up active. Complex team victory logic!</p>
+                </div>
+                
+                <div class="logic-gates">
+                    <strong>Logic Gates Used:</strong> OR + AND + NOT (3 gates)
+                </div>
+                
+                <div class="truth-table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>P1 Goal<br>(A)</th>
+                                <th>P2 Goal<br>(B)</th>
+                                <th>Flag Captured<br>(C)</th>
+                                <th>Enemy PowerUp<br>(D)</th>
+                                <th>Team Wins<br>(Output)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>1</td><td>0</td><td>1</td><td>0</td><td>1</td></tr>
+                            <tr><td>0</td><td>1</td><td>1</td><td>0</td><td>1</td></tr>
+                            <tr><td>1</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
+                            <tr><td>1</td><td>0</td><td>1</td><td>1</td><td>0</td></tr>
+                            <tr><td>0</td><td>0</td><td>1</td><td>0</td><td>0</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="design-requirements">
+                    <h3>📋 Design Requirements</h3>
+                    <ul>
+                        <li>Gate 1: OR checks if any player reached goal</li>
+                        <li>Gate 2: NOT inverts enemy power-up status</li>
+                        <li>Gate 3: AND combines goal, flag, and no-powerup</li>
+                        <li>Include all 4 inputs in circuit diagram</li>
+                        <li>Show why each condition is necessary for victory</li>
+                        <li>Explain teamwork element (either player works)</li>
+                    </ul>
+                </div>
+                
+                <div class="hints">
+                    <strong>💡 Hint:</strong> Victory needs multiple things: Someone at goal (OR), flag secured (AND), enemy weak (NOT their powerup, then AND). Like a checklist where ALL must be true!
+                </div>
+            </div>
+            
+            <!-- ADVANCED CHALLENGE 5 -->
+            <div class="card advanced" data-level="advanced">
+                <div class="card-header">
+                    <div class="card-title">Puzzle Room Access Control</div>
+                    <div class="difficulty-badge">ADVANCED</div>
+                </div>
+                
+                <div class="game-scenario">
+                    <h3>🧩 Game Scenario</h3>
+                    <p>An ancient puzzle room opens when: Exactly ONE of two statues is activated (XOR) AND player has the amulet AND it's NOT raining (water damages ancient mechanisms).</p>
+                </div>
+                
+                <div class="logic-gates">
+                    <strong>Logic Gates Used:</strong> XOR + AND + NOT (3 gates)
+                </div>
+                
+                <div class="truth-table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Statue 1<br>(A)</th>
+                                <th>Statue 2<br>(B)</th>
+                                <th>Has Amulet<br>(C)</th>
+                                <th>Raining<br>(D)</th>
+                                <th>Room Opens<br>(Output)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>0</td><td>1</td><td>1</td><td>0</td><td>1</td></tr>
+                            <tr><td>1</td><td>0</td><td>1</td><td>0</td><td>1</td></tr>
+                            <tr><td>1</td><td>1</td><td>1</td><td>0</td><td>0</td></tr>
+                            <tr><td>0</td><td>1</td><td>0</td><td>0</td><td>0</td></tr>
+                            <tr><td>1</td><td>0</td><td>1</td><td>1</td><td>0</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="design-requirements">
+                    <h3>📋 Design Requirements</h3>
+                    <ul>
+                        <li>Gate 1: XOR ensures only one statue is active</li>
+                        <li>Gate 2: NOT inverts the rain condition</li>
+                        <li>Gate 3: AND combines XOR result, amulet, and weather</li>
+                        <li>Draw 4 inputs with clear gate connections</li>
+                        <li>Explain why both statues fail the puzzle</li>
+                        <li>Show weather protection mechanism</li>
+                    </ul>
+                </div>
+                
+                <div class="hints">
+                    <strong>💡 Hint:</strong> XOR is perfect for "exactly one" puzzles! Then add safety checks: have key item (amulet) AND safe conditions (not raining). Combine with AND at the end!
+                </div>
+            </div>
+            
+            <!-- ADVANCED CHALLENGE 6 -->
+            <div class="card advanced" data-level="advanced">
+                <div class="card-header">
+                    <div class="card-title">Space Game Life Support System</div>
+                    <div class="difficulty-badge">ADVANCED</div>
+                </div>
+                
+                <div class="game-scenario">
+                    <h3>🚀 Game Scenario</h3>
+                    <p>Emergency oxygen activates when: (Oxygen tank 1 OR tank 2 is empty) AND player is NOT in safe zone AND hull breach alarm is active. Life support emergency logic!</p>
+                </div>
+                
+                <div class="logic-gates">
+                    <strong>Logic Gates Used:</strong> OR + NOT + AND (3 gates)
+                </div>
+                
+                <div class="truth-table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Tank1 Empty<br>(A)</th>
+                                <th>Tank2 Empty<br>(B)</th>
+                                <th>In Safe Zone<br>(C)</th>
+                                <th>Hull Breach<br>(D)</th>
+                                <th>Emergency O₂<br>(Output)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>1</td><td>0</td><td>0</td><td>1</td><td>1</td></tr>
+                            <tr><td>0</td><td>1</td><td>0</td><td>1</td><td>1</td></tr>
+                            <tr><td>1</td><td>0</td><td>1</td><td>1</td><td>0</td></tr>
+                            <tr><td>1</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
+                            <tr><td>0</td><td>0</td><td>0</td><td>1</td><td>0</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="design-requirements">
+                    <h3>📋 Design Requirements</h3>
+                    <ul>
+                        <li>Gate 1: OR checks if any oxygen tank is depleted</li>
+                        <li>Gate 2: NOT safe zone (danger area check)</li>
+                        <li>Gate 3: AND all danger conditions together</li>
+                        <li>Show 4 inputs representing ship systems</li>
+                        <li>Explain emergency activation logic</li>
+                        <li>Demonstrate why all 3 conditions needed</li>
+                    </ul>
+                </div>
+                
+                <div class="hints">
+                    <strong>💡 Hint:</strong> Emergency systems need multiple triggers: resource problem (OR tanks), danger location (NOT safe), and actual emergency (breach). Think like a real safety system!
+                </div>
+            </div>
+            
+        </div>
+        
+        <div style="background: white; padding: 25px; border-radius: 15px; margin-top: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.3);">
+            <h2 style="color: #667eea; margin-bottom: 15px;">📝 Design Requirements for All Challenges</h2>
+            <div style="background: #f8f9fa; padding: 20px; border-radius: 10px; border-left: 5px solid #667eea;">
+                <h3 style="color: #333; margin-bottom: 10px;">What Students Must Create:</h3>
+                <ul style="margin-left: 25px; color: #555; line-height: 1.8;">
+                    <li><strong>Circuit Diagram:</strong> Draw the logic gates with inputs and outputs clearly labeled</li>
+                    <li><strong>Truth Table:</strong> Complete table showing all input combinations and outputs</li>
+                    <li><strong>Game Design Document:</strong> Explain the game scenario and how the PLD works</li>
+                    <li><strong>Physical Model (Optional):</strong> Use cardboard, LEDs, buttons, or craft materials to simulate the device</li>
+                    <li><strong>Code Pseudocode:</strong> Write how the micro:bit would be programmed (doesn't need to be actual code)</li>
+                    <li><strong>Presentation:</strong> Be ready to explain your PLD design to the class</li>
+                </ul>
+            </div>
+            
+            <h3 style="color: #667eea; margin: 20px 0 10px 0;">🎨 Suggested Materials for Models:</h3>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px; margin-top: 15px;">
+                <div style="background: #e8f5e9; padding: 15px; border-radius: 8px;">
+                    <strong style="color: #2e7d32;">Visual Indicators:</strong>
+                    <p style="margin: 5px 0; color: #555;">LEDs, colored paper, flip cards, light-up stickers</p>
+                </div>
+                <div style="background: #e3f2fd; padding: 15px; border-radius: 8px;">
+                    <strong style="color: #1565c0;">Inputs:</strong>
+                    <p style="margin: 5px 0; color: #555;">Buttons, switches, sliders, pressure plates (cardboard)</p>
+                </div>
+                <div style="background: #fff3e0; padding: 15px; border-radius: 8px;">
+                    <strong style="color: #e65100;">Connectors:</strong>
+                    <p style="margin: 5px 0; color: #555;">Copper tape, conductive thread, alligator clips, wire</p>
+                </div>
+                <div style="background: #f3e5f5; padding: 15px; border-radius: 8px;">
+                    <strong style="color: #6a1b9a;">Base Materials:</strong>
+                    <p style="margin: 5px 0; color: #555;">Cardboard, foam board, poster board, shoebox</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        function filterCards(level) {
+            const cards = document.querySelectorAll('.card');
+            cards.forEach(card => {
+                if (level === 'all') {
+                    card.style.display = 'block';
+                } else {
+                    if (card.dataset.level === level) {
+                        card.style.display = 'block';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                }
+            });
+        }
+        
+        // Show all cards by default
+        filterCards('all');
+    </script>
+</body>
+</html>
