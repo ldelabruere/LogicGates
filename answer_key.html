@@ -1,0 +1,1150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Logic Gate Challenge - Teacher Answer Key</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            text-align: center;
+            background: white;
+            color: #667eea;
+            padding: 30px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+        
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        
+        .header .subtitle {
+            color: #666;
+            font-size: 1.2em;
+        }
+        
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+        
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+            color: white;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.3);
+        }
+        
+        .btn-easy { background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%); }
+        .btn-standard { background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); }
+        .btn-advanced { background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); color: #333; }
+        .btn-print { background: #333; }
+        
+        .answer-section {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            page-break-inside: avoid;
+        }
+        
+        .answer-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+            border-bottom: 3px solid;
+        }
+        
+        .answer-section.easy .answer-header { border-color: #11998e; }
+        .answer-section.standard .answer-header { border-color: #f5576c; }
+        .answer-section.advanced .answer-header { border-color: #fa709a; }
+        
+        .answer-title {
+            font-size: 1.6em;
+            font-weight: bold;
+            color: #333;
+        }
+        
+        .difficulty-badge {
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: bold;
+            color: white;
+        }
+        
+        .easy .difficulty-badge { background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%); }
+        .standard .difficulty-badge { background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); }
+        .advanced .difficulty-badge { background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); color: #333; }
+        
+        .subsection {
+            margin-bottom: 25px;
+        }
+        
+        .subsection-title {
+            background: #667eea;
+            color: white;
+            padding: 10px 15px;
+            border-radius: 5px;
+            font-size: 1.1em;
+            margin-bottom: 15px;
+        }
+        
+        .answer-content {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 5px solid #667eea;
+            margin-bottom: 15px;
+        }
+        
+        .answer-content h4 {
+            color: #667eea;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+        
+        .answer-content p {
+            color: #333;
+            line-height: 1.8;
+            margin: 8px 0;
+        }
+        
+        .answer-content ul {
+            margin-left: 25px;
+            color: #555;
+            line-height: 1.8;
+        }
+        
+        .truth-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+            background: white;
+        }
+        
+        .truth-table th, .truth-table td {
+            border: 2px solid #333;
+            padding: 12px;
+            text-align: center;
+        }
+        
+        .truth-table th {
+            background: #667eea;
+            color: white;
+            font-weight: bold;
+        }
+        
+        .truth-table td {
+            background: white;
+        }
+        
+        .truth-table tr:hover td {
+            background: #f0f0f0;
+        }
+        
+        .circuit-description {
+            background: #e3f2fd;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 5px solid #2196f3;
+            margin: 15px 0;
+        }
+        
+        .teaching-tip {
+            background: #fff3e0;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 5px solid #ff9800;
+            margin: 15px 0;
+        }
+        
+        .teaching-tip h4 {
+            color: #e65100;
+            margin-bottom: 10px;
+        }
+        
+        .common-errors {
+            background: #ffebee;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 5px solid #f44336;
+            margin: 15px 0;
+        }
+        
+        .common-errors h4 {
+            color: #c62828;
+            margin-bottom: 10px;
+        }
+        
+        .code-example {
+            background: #263238;
+            color: #aed581;
+            padding: 15px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            margin: 15px 0;
+            overflow-x: auto;
+        }
+        
+        .code-example .comment {
+            color: #78909c;
+        }
+        
+        @media print {
+            body {
+                background: white;
+            }
+            
+            .controls {
+                display: none;
+            }
+            
+            .answer-section {
+                page-break-inside: avoid;
+                border: 2px solid #ddd;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.8em;
+            }
+            
+            .answer-section {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🔑 Teacher Answer Key</h1>
+            <p class="subtitle">Logic Gate Game Design Challenges - Complete Solutions</p>
+        </div>
+        
+        <div class="controls">
+            <button class="btn btn-easy" onclick="filterAnswers('easy')">EASY Answers</button>
+            <button class="btn btn-standard" onclick="filterAnswers('standard')">STANDARD Answers</button>
+            <button class="btn btn-advanced" onclick="filterAnswers('advanced')">ADVANCED Answers</button>
+            <button class="btn btn-print" onclick="window.print()">🖨️ Print Answer Key</button>
+        </div>
+        
+        <!-- EASY CHALLENGE 1: NOT GATE -->
+        <div class="answer-section easy" data-level="easy">
+            <div class="answer-header">
+                <div class="answer-title">Night Mode Switcher</div>
+                <div class="difficulty-badge">EASY</div>
+            </div>
+            
+            <div class="subsection">
+                <div class="subsection-title">Complete Solution</div>
+                
+                <div class="answer-content">
+                    <h4>Inputs & Outputs</h4>
+                    <p><strong>Input A:</strong> Daytime sensor (1 = Day, 0 = Night)</p>
+                    <p><strong>Output:</strong> Monsters active (1 = Active, 0 = Sleep)</p>
+                </div>
+                
+                <div class="answer-content">
+                    <h4>Logic Gate Used</h4>
+                    <p><strong>NOT Gate (Inverter)</strong></p>
+                    <p>The NOT gate inverts the daytime signal so monsters appear at night only.</p>
+                </div>
+                
+                <div class="answer-content">
+                    <h4>Truth Table</h4>
+                    <table class="truth-table">
+                        <tr>
+                            <th>Daytime (Input A)</th>
+                            <th>Monsters Active (Output)</th>
+                            <th>Game Behavior</th>
+                        </tr>
+                        <tr>
+                            <td>0 (Night)</td>
+                            <td>1 (Active)</td>
+                            <td>Monsters appear and roam</td>
+                        </tr>
+                        <tr>
+                            <td>1 (Day)</td>
+                            <td>0 (Sleep)</td>
+                            <td>Monsters are sleeping/hidden</td>
+                        </tr>
+                    </table>
+                </div>
+                
+                <div class="circuit-description">
+                    <h4>Circuit Flow</h4>
+                    <p><strong>Daytime Sensor → NOT Gate → Monster Controller</strong></p>
+                    <p>When sensor reads 1 (daytime), NOT gate outputs 0 (monsters off)</p>
+                    <p>When sensor reads 0 (nighttime), NOT gate outputs 1 (monsters on)</p>
+                </div>
+                
+                <div class="code-example">
+<strong>Pseudocode:</strong>
+READ daytime FROM sensor
+monsters_active = NOT daytime
+OUTPUT monsters_active TO monster_controller
+
+<span class="comment">// MakeCode Block Example</span>
+forever:
+    if (daytime == 1):
+        monsters_active = 0
+    else:
+        monsters_active = 1
+                </div>
+                
+                <div class="teaching-tip">
+                    <h4>💡 Teaching Tips</h4>
+                    <ul>
+                        <li>Connect to real nightlights: They turn on when it's NOT bright</li>
+                        <li>Students often forget that NOT inverts the entire logic</li>
+                        <li>Have students verbalize: "If it IS day, monsters are NOT active"</li>
+                        <li>Good starter challenge - builds confidence with simple inversion</li>
+                    </ul>
+                </div>
+                
+                <div class="common-errors">
+                    <h4>⚠️ Common Student Errors</h4>
+                    <ul>
+                        <li>Forgetting to invert - using daytime signal directly</li>
+                        <li>Confusing input labels (thinking 1=night instead of 1=day)</li>
+                        <li>Drawing circuit without the NOT gate symbol</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <!-- EASY CHALLENGE 2: OR GATE -->
+        <div class="answer-section easy" data-level="easy">
+            <div class="answer-header">
+                <div class="answer-title">Multi-Player Door Unlock</div>
+                <div class="difficulty-badge">EASY</div>
+            </div>
+            
+            <div class="subsection">
+                <div class="subsection-title">Complete Solution</div>
+                
+                <div class="answer-content">
+                    <h4>Inputs & Outputs</h4>
+                    <p><strong>Input A:</strong> Player 1 pressure plate (1 = Pressed, 0 = Not pressed)</p>
+                    <p><strong>Input B:</strong> Player 2 pressure plate (1 = Pressed, 0 = Not pressed)</p>
+                    <p><strong>Output:</strong> Door unlocked (1 = Open, 0 = Locked)</p>
+                </div>
+                
+                <div class="answer-content">
+                    <h4>Logic Gate Used</h4>
+                    <p><strong>OR Gate</strong></p>
+                    <p>The OR gate allows ANY player to open the door - cooperative gameplay.</p>
+                </div>
+                
+                <div class="answer-content">
+                    <h4>Truth Table</h4>
+                    <table class="truth-table">
+                        <tr>
+                            <th>Player 1 (A)</th>
+                            <th>Player 2 (B)</th>
+                            <th>Door Open (Output)</th>
+                            <th>Game Behavior</th>
+                        </tr>
+                        <tr>
+                            <td>0</td>
+                            <td>0</td>
+                            <td>0</td>
+                            <td>Door stays locked</td>
+                        </tr>
+                        <tr>
+                            <td>0</td>
+                            <td>1</td>
+                            <td>1</td>
+                            <td>Player 2 opens door</td>
+                        </tr>
+                        <tr>
+                            <td>1</td>
+                            <td>0</td>
+                            <td>1</td>
+                            <td>Player 1 opens door</td>
+                        </tr>
+                        <tr>
+                            <td>1</td>
+                            <td>1</td>
+                            <td>1</td>
+                            <td>Both players can enter together</td>
+                        </tr>
+                    </table>
+                </div>
+                
+                <div class="circuit-description">
+                    <h4>Circuit Flow</h4>
+                    <p><strong>Player 1 Plate → OR Gate ← Player 2 Plate → Door Lock</strong></p>
+                    <p>Both inputs connect to the OR gate, which outputs to the door mechanism</p>
+                </div>
+                
+                <div class="code-example">
+<strong>Pseudocode:</strong>
+READ player1 FROM pin0
+READ player2 FROM pin1
+door_open = player1 OR player2
+OUTPUT door_open TO door_lock
+
+<span class="comment">// MakeCode Block Example</span>
+forever:
+    if (player1 == 1 OR player2 == 1):
+        door_open = 1
+    else:
+        door_open = 0
+                </div>
+                
+                <div class="teaching-tip">
+                    <h4>💡 Teaching Tips</h4>
+                    <ul>
+                        <li>Emphasize "at least one" concept for OR gates</li>
+                        <li>Connect to real life: automatic doors open if ANYONE approaches</li>
+                        <li>Good for discussing teamwork in games</li>
+                        <li>Ask: "Why would game designers use OR instead of AND here?"</li>
+                    </ul>
+                </div>
+                
+                <div class="common-errors">
+                    <h4>⚠️ Common Student Errors</h4>
+                    <ul>
+                        <li>Confusing OR with XOR (thinking both players can't work together)</li>
+                        <li>Missing the case where both players press simultaneously</li>
+                        <li>Using AND gate instead, requiring both players</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <!-- EASY CHALLENGE 3: AND GATE -->
+        <div class="answer-section easy" data-level="easy">
+            <div class="answer-header">
+                <div class="answer-title">Two-Key Treasure Chest</div>
+                <div class="difficulty-badge">EASY</div>
+            </div>
+            
+            <div class="subsection">
+                <div class="subsection-title">Complete Solution</div>
+                
+                <div class="answer-content">
+                    <h4>Inputs & Outputs</h4>
+                    <p><strong>Input A:</strong> Golden Key collected (1 = Yes, 0 = No)</p>
+                    <p><strong>Input B:</strong> Silver Key collected (1 = Yes, 0 = No)</p>
+                    <p><strong>Output:</strong> Chest opens (1 = Open, 0 = Locked)</p>
+                </div>
+                
+                <div class="answer-content">
+                    <h4>Logic Gate Used</h4>
+                    <p><strong>AND Gate</strong></p>
+                    <p>The AND gate requires BOTH keys - creates a challenging quest objective.</p>
+                </div>
+                
+                <div class="answer-content">
+                    <h4>Truth Table</h4>
+                    <table class="truth-table">
+                        <tr>
+                            <th>Golden Key (A)</th>
+                            <th>Silver Key (B)</th>
+                            <th>Chest Opens (Output)</th>
+                            <th>Game Behavior</th>
+                        </tr>
+                        <tr>
+                            <td>0</td>
+                            <td>0</td>
+                            <td>0</td>
+                            <td>Need both keys</td>
+                        </tr>
+                        <tr>
+                            <td>0</td>
+                            <td>1</td>
+                            <td>0</td>
+                            <td>Still need golden key</td>
+                        </tr>
+                        <tr>
+                            <td>1</td>
+                            <td>0</td>
+                            <td>0</td>
+                            <td>Still need silver key</td>
+                        </tr>
+                        <tr>
+                            <td>1</td>
+                            <td>1</td>
+                            <td>1</td>
+                            <td>Chest unlocks! Treasure obtained</td>
+                        </tr>
+                    </table>
+                </div>
+                
+                <div class="circuit-description">
+                    <h4>Circuit Flow</h4>
+                    <p><strong>Golden Key Inventory → AND Gate ← Silver Key Inventory → Chest Lock</strong></p>
+                    <p>Both key signals must be HIGH (1) for the chest to unlock</p>
+                </div>
+                
+                <div class="code-example">
+<strong>Pseudocode:</strong>
+READ golden_key FROM inventory
+READ silver_key FROM inventory
+chest_open = golden_key AND silver_key
+OUTPUT chest_open TO chest_lock
+
+<span class="comment">// MakeCode Block Example</span>
+forever:
+    if (golden_key == 1 AND silver_key == 1):
+        chest_open = 1
+    else:
+        chest_open = 0
+                </div>
+                
+                <div class="teaching-tip">
+                    <h4>💡 Teaching Tips</h4>
+                    <ul>
+                        <li>Connect to login systems: need username AND password</li>
+                        <li>Emphasize that only ONE combination works (both keys)</li>
+                        <li>Discuss why game designers use AND for treasure (increases challenge)</li>
+                        <li>Compare with OR gate door - why different gates for different purposes?</li>
+                    </ul>
+                </div>
+                
+                <div class="common-errors">
+                    <h4>⚠️ Common Student Errors</h4>
+                    <ul>
+                        <li>Using OR gate, making puzzle too easy</li>
+                        <li>Thinking only one key should work</li>
+                        <li>Not understanding why three rows output 0</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <!-- EASY CHALLENGE 4: XOR GATE -->
+        <div class="answer-section easy" data-level="easy">
+            <div class="answer-header">
+                <div class="answer-title">Light Switch Puzzle</div>
+                <div class="difficulty-badge">EASY</div>
+            </div>
+            
+            <div class="subsection">
+                <div class="subsection-title">Complete Solution</div>
+                
+                <div class="answer-content">
+                    <h4>Inputs & Outputs</h4>
+                    <p><strong>Input A:</strong> Switch 1 position (1 = Up, 0 = Down)</p>
+                    <p><strong>Input B:</strong> Switch 2 position (1 = Up, 0 = Down)</p>
+                    <p><strong>Output:</strong> Light on (1 = On, 0 = Off)</p>
+                </div>
+                
+                <div class="answer-content">
+                    <h4>Logic Gate Used</h4>
+                    <p><strong>XOR Gate (Exclusive OR)</strong></p>
+                    <p>The XOR gate creates a puzzle where switches must be DIFFERENT to activate light.</p>
+                </div>
+                
+                <div class="answer-content">
+                    <h4>Truth Table</h4>
+                    <table class="truth-table">
+                        <tr>
+                            <th>Switch 1 (A)</th>
+                            <th>Switch 2 (B)</th>
+                            <th>Light On (Output)</th>
+                            <th>Game Behavior</th>
+                        </tr>
+                        <tr>
+                            <td>0 (Down)</td>
+                            <td>0 (Down)</td>
+                            <td>0</td>
+                            <td>Both down - light off (puzzle unsolved)</td>
+                        </tr>
+                        <tr>
+                            <td>0 (Down)</td>
+                            <td>1 (Up)</td>
+                            <td>1</td>
+                            <td>Different positions - light on! ✓</td>
+                        </tr>
+                        <tr>
+                            <td>1 (Up)</td>
+                            <td>0 (Down)</td>
+                            <td>1</td>
+                            <td>Different positions - light on! ✓</td>
+                        </tr>
+                        <tr>
+                            <td>1 (Up)</td>
+                            <td>1 (Up)</td>
+                            <td>0</td>
+                            <td>Both up - light off (puzzle unsolved)</td>
+                        </tr>
+                    </table>
+                </div>
+                
+                <div class="circuit-description">
+                    <h4>Circuit Flow</h4>
+                    <p><strong>Switch 1 → XOR Gate ← Switch 2 → Light Bulb</strong></p>
+                    <p>XOR outputs HIGH only when inputs are DIFFERENT (opposite positions)</p>
+                </div>
+                
+                <div class="code-example">
+<strong>Pseudocode:</strong>
+READ switch1 FROM pin0
+READ switch2 FROM pin1
+light_on = switch1 XOR switch2
+OUTPUT light_on TO light_bulb
+
+<span class="comment">// MakeCode Block Example</span>
+forever:
+    if (switch1 != switch2):  <span class="comment">// different values</span>
+        light_on = 1
+    else:
+        light_on = 0
+                </div>
+                
+                <div class="teaching-tip">
+                    <h4>💡 Teaching Tips</h4>
+                    <ul>
+                        <li>XOR is hardest gate for students to grasp initially</li>
+                        <li>Key phrase: "one or the other, but NOT both"</li>
+                        <li>Connect to real 3-way light switches in hallways</li>
+                        <li>Show how XOR creates interesting puzzle mechanics</li>
+                        <li>Demonstrate: flipping either switch toggles the light</li>
+                    </ul>
+                </div>
+                
+                <div class="common-errors">
+                    <h4>⚠️ Common Student Errors</h4>
+                    <ul>
+                        <li>Confusing XOR with OR (thinking both switches can work)</li>
+                        <li>Not understanding why matching positions = off</li>
+                        <li>Drawing OR gate symbol instead of XOR</li>
+                        <li>Missing the "exclusive" part of "exclusive OR"</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <!-- STANDARD CHALLENGE 1: AND + NOT -->
+        <div class="answer-section standard" data-level="standard">
+            <div class="answer-header">
+                <div class="answer-title">Stealth Mission Alarm</div>
+                <div class="difficulty-badge">STANDARD</div>
+            </div>
+            
+            <div class="subsection">
+                <div class="subsection-title">Complete Solution</div>
+                
+                <div class="answer-content">
+                    <h4>Inputs & Outputs</h4>
+                    <p><strong>Input A:</strong> Guard spots player (1 = Spotted, 0 = Hidden)</p>
+                    <p><strong>Input B:</strong> Player has disguise (1 = Yes, 0 = No)</p>
+                    <p><strong>Output:</strong> Alarm sounds (1 = Alarm, 0 = Silent)</p>
+                </div>
+                
+                <div class="answer-content">
+                    <h4>Logic Gates Used</h4>
+                    <p><strong>Gate 1: NOT Gate</strong> - Inverts the disguise signal</p>
+                    <p><strong>Gate 2: AND Gate</strong> - Combines "spotted" with "no disguise"</p>
+                    <p><strong>Logic:</strong> Alarm = Spotted AND (NOT Disguise)</p>
+                </div>
+                
+                <div class="answer-content">
+                    <h4>Truth Table</h4>
+                    <table class="truth-table">
+                        <tr>
+                            <th>Spotted (A)</th>
+                            <th>Has Disguise (B)</th>
+                            <th>NOT B</th>
+                            <th>Alarm (Output)</th>
+                            <th>Game Behavior</th>
+                        </tr>
+                        <tr>
+                            <td>0</td>
+                            <td>0</td>
+                            <td>1</td>
+                            <td>0</td>
+                            <td>Hidden - no alarm</td>
+                        </tr>
+                        <tr>
+                            <td>0</td>
+                            <td>1</td>
+                            <td>0</td>
+                            <td>0</td>
+                            <td>Hidden with disguise - no alarm</td>
+                        </tr>
+                        <tr>
+                            <td>1</td>
+                            <td>0</td>
+                            <td>1</td>
+                            <td>1</td>
+                            <td>Spotted without disguise - ALARM! 🚨</td>
+                        </tr>
+                        <tr>
+                            <td>1</td>
+                            <td>1</td>
+                            <td>0</td>
+                            <td>0</td>
+                            <td>Spotted but disguised - safe!</td>
+                        </tr>
+                    </table>
+                </div>
+                
+                <div class="circuit-description">
+                    <h4>Circuit Flow (2-Stage)</h4>
+                    <p><strong>Stage 1:</strong> Disguise Input → NOT Gate → "No Disguise" signal</p>
+                    <p><strong>Stage 2:</strong> "No Disguise" + Spotted → AND Gate → Alarm Output</p>
+                    <p><strong>Complete Flow:</strong> Both conditions must be true for alarm</p>
+                </div>
+                
+                <div class="code-example">
+<strong>Pseudocode:</strong>
+READ spotted FROM guard_sensor
+READ has_disguise FROM inventory
+no_disguise = NOT has_disguise        <span class="comment">// Gate 1</span>
+alarm = spotted AND no_disguise       <span class="comment">// Gate 2</span>
+OUTPUT alarm TO alarm_system
+
+<span class="comment">// MakeCode Block Example</span>
+forever:
+    no_disguise = NOT has_disguise
+    if (spotted == 1 AND no_disguise == 1):
+        alarm = 1
+    else:
+        alarm = 0
+                </div>
+                
+                <div class="teaching-tip">
+                    <h4>💡 Teaching Tips</h4>
+                    <ul>
+                        <li>This is students' first multi-gate challenge - emphasize gate ORDER</li>
+                        <li>Have students identify which gate comes FIRST in the logic</li>
+                        <li>Draw intermediate signal on circuit diagram (label "no_disguise")</li>
+                        <li>Discuss: disguise acts as "protection" - negates the spotted condition</li>
+                        <li>Compare to real security: badge + face scan (both needed)</li>
+                    </ul>
+                </div>
+                
+                <div class="common-errors">
+                    <h4>⚠️ Common Student Errors</h4>
+                    <ul>
+                        <li>Forgetting to invert disguise signal first</li>
+                        <li>Using OR instead of AND (alarm would sound too easily)</li>
+                        <li>Connecting gates in wrong order</li>
+                        <li>Not labeling the intermediate "no disguise" signal</li>
+                        <li>Missing truth table row where both inputs are 1</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <!-- STANDARD CHALLENGE 2: OR + AND -->
+        <div class="answer-section standard" data-level="standard">
+            <div class="answer-header">
+                <div class="answer-title">Power-Up Combo System</div>
+                <div class="difficulty-badge">STANDARD</div>
+            </div>
+            
+            <div class="subsection">
+                <div class="subsection-title">Complete Solution</div>
+                
+                <div class="answer-content">
+                    <h4>Inputs & Outputs</h4>
+                    <p><strong>Input A:</strong> Full health (1 = Full, 0 = Not full)</p>
+                    <p><strong>Input B:</strong> Full energy (1 = Full, 0 = Not full)</p>
+                    <p><strong>Input C:</strong> Button pressed (1 = Pressed, 0 = Not pressed)</p>
+                    <p><strong>Output:</strong> Super move activates (1 = Activate, 0 = No move)</p>
+                </div>
+                
+                <div class="answer-content">
+                    <h4>Logic Gates Used</h4>
+                    <p><strong>Gate 1: OR Gate</strong> - Checks if health OR energy is full</p>
+                    <p><strong>Gate 2: AND Gate</strong> - Combines "powered up" with button press</p>
+                    <p><strong>Logic:</strong> Super Move = (Health OR Energy) AND Button</p>
+                </div>
+                
+                <div class="answer-content">
+                    <h4>Truth Table</h4>
+                    <table class="truth-table">
+                        <tr>
+                            <th>Health (A)</th>
+                            <th>Energy (B)</th>
+                            <th>Button (C)</th>
+                            <th>A OR B</th>
+                            <th>Super Move (Output)</th>
+                        </tr>
+                        <tr><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
+                        <tr><td>0</td><td>0</td><td>1</td><td>0</td><td>0 - Not powered up!</td></tr>
+                        <tr><td>0</td><td>1</td><td>0</td><td>1</td><td>0 - Didn't press button</td></tr>
+                        <tr><td>0</td><td>1</td><td>1</td><td>1</td><td>1 - SUCCESS! ⚡</td></tr>
+                        <tr><td>1</td><td>0</td><td>0</td><td>1</td><td>0 - Didn't press button</td></tr>
+                        <tr><td>1</td><td>0</td><td>1</td><td>1</td><td>1 - SUCCESS! ⚡</td></tr>
+                        <tr><td>1</td><td>1</td><td>0</td><td>1</td><td>0 - Didn't press button</td></tr>
+                        <tr><td>1</td><td>1</td><td>1</td><td>1</td><td>1 - SUCCESS! ⚡</td></tr>
+                    </table>
+                </div>
+                
+                <div class="circuit-description">
+                    <h4>Circuit Flow (2-Stage)</h4>
+                    <p><strong>Stage 1:</strong> Health + Energy → OR Gate → "Powered Up" signal</p>
+                    <p><strong>Stage 2:</strong> "Powered Up" + Button → AND Gate → Super Move</p>
+                    <p><strong>Key Point:</strong> Player must be powered up (either way) AND press button</p>
+                </div>
+                
+                <div class="code-example">
+<strong>Pseudocode:</strong>
+READ full_health FROM player_stats
+READ full_energy FROM player_stats
+READ button_pressed FROM controller
+powered_up = full_health OR full_energy   <span class="comment">// Gate 1</span>
+super_move = powered_up AND button_pressed <span class="comment">// Gate 2</span>
+OUTPUT super_move TO game_engine
+
+<span class="comment">// MakeCode Block Example</span>
+forever:
+    powered_up = (full_health OR full_energy)
+    if (powered_up AND button_pressed):
+        activate_super_move()
+                </div>
+                
+                <div class="teaching-tip">
+                    <h4>💡 Teaching Tips</h4>
+                    <ul>
+                        <li>This introduces 3-input problems (good progression)</li>
+                        <li>Emphasize hierarchy: OR happens first, then AND</li>
+                        <li>Connect to real games (fighting games, RPGs with special moves)</li>
+                        <li>Truth table has 8 rows - walk through systematically</li>
+                        <li>Ask: "Why would designers require BOTH conditions?"</li>
+                    </ul>
+                </div>
+                
+                <div class="common-errors">
+                    <h4>⚠️ Common Student Errors</h4>
+                    <ul>
+                        <li>Using AND for health/energy (would require both - too restrictive)</li>
+                        <li>Missing intermediate "powered up" signal in diagram</li>
+                        <li>Forgetting to test all 8 input combinations</li>
+                        <li>Reversing gate order (AND before OR)</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <!-- ADVANCED CHALLENGE 1: OR + AND + NOT -->
+        <div class="answer-section advanced" data-level="advanced">
+            <div class="answer-header">
+                <div class="answer-title">Boss Battle Weakness System</div>
+                <div class="difficulty-badge">ADVANCED</div>
+            </div>
+            
+            <div class="subsection">
+                <div class="subsection-title">Complete Solution</div>
+                
+                <div class="answer-content">
+                    <h4>Inputs & Outputs</h4>
+                    <p><strong>Input A:</strong> Fire weapon equipped (1 = Yes, 0 = No)</p>
+                    <p><strong>Input B:</strong> Ice weapon equipped (1 = Yes, 0 = No)</p>
+                    <p><strong>Input C:</strong> Boss shield down (1 = Down, 0 = Up)</p>
+                    <p><strong>Input D:</strong> Raining (1 = Yes, 0 = No)</p>
+                    <p><strong>Output:</strong> Boss takes damage (1 = Damage, 0 = No damage)</p>
+                </div>
+                
+                <div class="answer-content">
+                    <h4>Logic Gates Used (3-Gate Design)</h4>
+                    <p><strong>Gate 1: OR Gate</strong> - Checks for any special weapon</p>
+                    <p><strong>Gate 2: NOT Gate</strong> - Inverts rain signal (not raining)</p>
+                    <p><strong>Gate 3: AND Gate</strong> - Combines weapon + shield + weather</p>
+                    <p><strong>Logic:</strong> Damage = (Fire OR Ice) AND Shield_Down AND (NOT Raining)</p>
+                </div>
+                
+                <div class="answer-content">
+                    <h4>Truth Table (Key Combinations)</h4>
+                    <table class="truth-table">
+                        <tr>
+                            <th>Fire</th>
+                            <th>Ice</th>
+                            <th>Shield</th>
+                            <th>Rain</th>
+                            <th>A OR B</th>
+                            <th>NOT D</th>
+                            <th>Boss Damage</th>
+                        </tr>
+                        <tr><td>0</td><td>0</td><td>1</td><td>0</td><td>0</td><td>1</td><td>0 - No weapon</td></tr>
+                        <tr><td>1</td><td>0</td><td>0</td><td>0</td><td>1</td><td>1</td><td>0 - Shield blocks</td></tr>
+                        <tr><td>1</td><td>0</td><td>1</td><td>1</td><td>1</td><td>0</td><td>0 - Rain extinguishes</td></tr>
+                        <tr><td>1</td><td>0</td><td>1</td><td>0</td><td>1</td><td>1</td><td>1 - SUCCESS! 🔥</td></tr>
+                        <tr><td>0</td><td>1</td><td>1</td><td>0</td><td>1</td><td>1</td><td>1 - SUCCESS! ❄️</td></tr>
+                        <tr><td>1</td><td>1</td><td>1</td><td>0</td><td>1</td><td>1</td><td>1 - SUCCESS! 🔥❄️</td></tr>
+                    </table>
+                </div>
+                
+                <div class="circuit-description">
+                    <h4>Circuit Flow (3-Stage)</h4>
+                    <p><strong>Stage 1a:</strong> Fire + Ice → OR Gate → "Has Weapon"</p>
+                    <p><strong>Stage 1b:</strong> Rain → NOT Gate → "Not Raining"</p>
+                    <p><strong>Stage 2:</strong> "Has Weapon" + Shield_Down + "Not Raining" → AND Gate → Damage</p>
+                    <p><strong>All 3 conditions must be TRUE simultaneously!</strong></p>
+                </div>
+                
+                <div class="code-example">
+<strong>Pseudocode:</strong>
+READ fire_weapon FROM inventory
+READ ice_weapon FROM inventory
+READ shield_down FROM boss_status
+READ raining FROM weather
+has_weapon = fire_weapon OR ice_weapon        <span class="comment">// Gate 1</span>
+not_raining = NOT raining                      <span class="comment">// Gate 2</span>
+damage = has_weapon AND shield_down AND not_raining <span class="comment">// Gate 3</span>
+OUTPUT damage TO boss_health
+
+<span class="comment">// MakeCode Block Example</span>
+forever:
+    has_weapon = (fire_weapon OR ice_weapon)
+    not_raining = NOT raining
+    if (has_weapon AND shield_down AND not_raining):
+        boss_takes_damage()
+                </div>
+                
+                <div class="teaching-tip">
+                    <h4>💡 Teaching Tips</h4>
+                    <ul>
+                        <li>This is first 4-input challenge - expect students to need support</li>
+                        <li>Break down into stages: weapon check → weather check → combine all</li>
+                        <li>Emphasize that OR and NOT happen in parallel, then feed into AND</li>
+                        <li>Truth table has 16 rows - students can show selective rows</li>
+                        <li>Connect to real boss battles in games (multi-condition weaknesses)</li>
+                        <li>Discuss game balance: why make boss fights complex?</li>
+                    </ul>
+                </div>
+                
+                <div class="common-errors">
+                    <h4>⚠️ Common Student Errors</h4>
+                    <ul>
+                        <li>Forgetting to invert the rain signal</li>
+                        <li>Using AND for weapons (would require both weapons)</li>
+                        <li>Not showing intermediate signals in circuit diagram</li>
+                        <li>Confusion about which gates operate in parallel vs. series</li>
+                        <li>Incomplete truth table (missing combinations)</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <!-- TEACHING NOTES SECTION -->
+        <div class="answer-section" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;">
+            <div style="border-bottom: 3px solid white; padding-bottom: 15px; margin-bottom: 20px;">
+                <h2 style="color: white; font-size: 1.8em;">📚 General Teaching Notes</h2>
+            </div>
+            
+            <div class="subsection">
+                <div style="background: rgba(255,255,255,0.1); padding: 20px; border-radius: 10px; margin-bottom: 20px;">
+                    <h3 style="color: white; margin-bottom: 15px;">🎯 Assessment Guidelines</h3>
+                    <ul style="line-height: 1.8; margin-left: 25px;">
+                        <li><strong>Focus on Understanding:</strong> Can student explain WHY they chose each gate?</li>
+                        <li><strong>Truth Table Accuracy:</strong> This is the most objective measure of correctness</li>
+                        <li><strong>Circuit Clarity:</strong> Can another student understand their diagram?</li>
+                        <li><strong>Documentation Quality:</strong> Are labels clear and complete?</li>
+                        <li><strong>Real-World Connection:</strong> Can they relate logic to actual games/devices?</li>
+                    </ul>
+                </div>
+                
+                <div style="background: rgba(255,255,255,0.1); padding: 20px; border-radius: 10px; margin-bottom: 20px;">
+                    <h3 style="color: white; margin-bottom: 15px;">⏱️ Time Expectations</h3>
+                    <ul style="line-height: 1.8; margin-left: 25px;">
+                        <li><strong>EASY Challenges:</strong> 20-30 minutes (1 gate)</li>
+                        <li><strong>STANDARD Challenges:</strong> 35-45 minutes (2 gates)</li>
+                        <li><strong>ADVANCED Challenges:</strong> 50-60 minutes (3 gates, 4 inputs)</li>
+                        <li><strong>Physical Model Building:</strong> Add 30-45 minutes</li>
+                        <li><strong>Presentations:</strong> 5 minutes per student/group</li>
+                    </ul>
+                </div>
+                
+                <div style="background: rgba(255,255,255,0.1); padding: 20px; border-radius: 10px; margin-bottom: 20px;">
+                    <h3 style="color: white; margin-bottom: 15px;">🔍 Look-Fors During Assessment</h3>
+                    <ul style="line-height: 1.8; margin-left: 25px;">
+                        <li><strong>Correct Gate Selection:</strong> Did they choose appropriate gates for the logic?</li>
+                        <li><strong>Proper Gate Ordering:</strong> For multi-gate designs, is the sequence correct?</li>
+                        <li><strong>Complete Truth Tables:</strong> All input combinations tested?</li>
+                        <li><strong>Labeled Diagrams:</strong> All inputs, outputs, and gates clearly marked?</li>
+                        <li><strong>Intermediate Signals:</strong> For multi-gate, are connections between gates shown?</li>
+                        <li><strong>Game Logic Accuracy:</strong> Does the PLD actually solve the game scenario?</li>
+                        <li><strong>Thoughtful Reflection:</strong> Can they articulate their design choices?</li>
+                    </ul>
+                </div>
+                
+                <div style="background: rgba(255,255,255,0.1); padding: 20px; border-radius: 10px; margin-bottom: 20px;">
+                    <h3 style="color: white; margin-bottom: 15px;">💬 Discussion Questions for Class</h3>
+                    <ul style="line-height: 1.8; margin-left: 25px;">
+                        <li>Why would game designers choose OR vs AND for different mechanics?</li>
+                        <li>How does combining gates create more complex behaviors?</li>
+                        <li>What real-world devices use similar logic (security systems, appliances)?</li>
+                        <li>How do logic gates relate to the "if-then" statements in coding?</li>
+                        <li>Why is it important to test ALL input combinations?</li>
+                        <li>How could you modify your design to make it more challenging/easier?</li>
+                    </ul>
+                </div>
+                
+                <div style="background: rgba(255,255,255,0.1); padding: 20px; border-radius: 10px; margin-bottom: 20px;">
+                    <h3 style="color: white; margin-bottom: 15px;">🛠️ Differentiation Strategies</h3>
+                    <ul style="line-height: 1.8; margin-left: 25px;">
+                        <li><strong>For Struggling Students:</strong>
+                            <ul style="margin: 10px 0 10px 25px;">
+                                <li>Start with EASY challenges only</li>
+                                <li>Provide partially completed truth tables</li>
+                                <li>Use concrete manipulatives (colored cards for 0/1)</li>
+                                <li>Partner with stronger student</li>
+                                <li>Allow use of TinkerCAD simulator</li>
+                            </ul>
+                        </li>
+                        <li><strong>For Advanced Students:</strong>
+                            <ul style="margin: 10px 0 10px 25px;">
+                                <li>Challenge them with ADVANCED cards immediately</li>
+                                <li>Ask them to create their own game scenarios</li>
+                                <li>Have them build physical models with micro:bit</li>
+                                <li>Introduce NAND/NOR gates as extension</li>
+                                <li>Have them write actual micro:bit code</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div style="background: rgba(255,255,255,0.1); padding: 20px; border-radius: 10px;">
+                    <h3 style="color: white; margin-bottom: 15px;">✅ Quick Grading Tips</h3>
+                    <ul style="line-height: 1.8; margin-left: 25px;">
+                        <li><strong>Truth Table:</strong> Check one "success" row and one "failure" row for correctness</li>
+                        <li><strong>Circuit Diagram:</strong> Verify gates match the challenge requirements</li>
+                        <li><strong>Labels:</strong> Spot-check that inputs and outputs are clearly marked</li>
+                        <li><strong>Reflection Quality:</strong> Look for specific examples, not generic responses</li>
+                        <li><strong>Use Student Self-Assessment:</strong> Have students grade themselves first</li>
+                        <li><strong>Focus Feedback:</strong> Pick 1-2 areas for improvement rather than marking everything</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <!-- ANSWER KEY FOR REMAINING CHALLENGES -->
+        <div class="answer-section" style="background: #f8f9fa; border: 3px dashed #667eea;">
+            <div style="text-align: center; padding: 20px;">
+                <h2 style="color: #667eea; margin-bottom: 15px;">📝 Additional Challenge Solutions</h2>
+                <p style="color: #666; font-size: 1.1em; margin-bottom: 20px;">
+                    The remaining challenges follow similar patterns to those shown above.
+                </p>
+                
+                <div style="background: white; padding: 25px; border-radius: 10px; text-align: left; margin: 20px 0;">
+                    <h3 style="color: #667eea; margin-bottom: 15px;">Quick Reference for Remaining Challenges:</h3>
+                    
+                    <div style="margin: 15px 0; padding: 15px; background: #e3f2fd; border-radius: 8px;">
+                        <h4 style="color: #1976d2;">Platform Switch Puzzle (STANDARD)</h4>
+                        <p><strong>Gates:</strong> XOR + AND</p>
+                        <p><strong>Logic:</strong> Bridge = (Elevator1 XOR Elevator2) AND Daytime</p>
+                        <p><strong>Key Point:</strong> Elevators must be at different floors, only during day</p>
+                    </div>
+                    
+                    <div style="margin: 15px 0; padding: 15px; background: #e3f2fd; border-radius: 8px;">
+                        <h4 style="color: #1976d2;">Safe Zone Detector (STANDARD)</h4>
+                        <p><strong>Gates:</strong> OR + NOT</p>
+                        <p><strong>Logic:</strong> Danger = NOT (Shelter OR Shield)</p>
+                        <p><strong>Key Point:</strong> Alert when NOT safe (inverse of safety check)</p>
+                    </div>
+                    
+                    <div style="margin: 15px 0; padding: 15px; background: #fff3e0; border-radius: 8px;">
+                        <h4 style="color: #e65100;">Secret Door Triple Lock (ADVANCED)</h4>
+                        <p><strong>Gates:</strong> OR + AND + NOT</p>
+                        <p><strong>Logic:</strong> Door = Crystal AND (Blue OR Green) AND (NOT FullMoon)</p>
+                        <p><strong>Key Point:</strong> Need crystal + either key + not full moon</p>
+                    </div>
+                    
+                    <div style="margin: 15px 0; padding: 15px; background: #fff3e0; border-radius: 8px;">
+                        <h4 style="color: #e65100;">Racing Game Boost (ADVANCED)</h4>
+                        <p><strong>Gates:</strong> OR + NOT + AND</p>
+                        <p><strong>Logic:</strong> Boost = (Speed OR Pad) AND (NOT Empty) AND (NOT Collision)</p>
+                        <p><strong>Key Point:</strong> Multiple safety checks with NOT gates</p>
+                    </div>
+                    
+                    <div style="margin: 15px 0; padding: 15px; background: #fff3e0; border-radius: 8px;">
+                        <h4 style="color: #e65100;">Multiplayer Victory (ADVANCED)</h4>
+                        <p><strong>Gates:</strong> OR + AND + NOT</p>
+                        <p><strong>Logic:</strong> Win = (P1 OR P2) AND Flag AND (NOT EnemyPower)</p>
+                        <p><strong>Key Point:</strong> Either player + flag + enemy weakness</p>
+                    </div>
+                    
+                    <div style="margin: 15px 0; padding: 15px; background: #fff3e0; border-radius: 8px;">
+                        <h4 style="color: #e65100;">Puzzle Room Access (ADVANCED)</h4>
+                        <p><strong>Gates:</strong> XOR + AND + NOT</p>
+                        <p><strong>Logic:</strong> Open = (Statue1 XOR Statue2) AND Amulet AND (NOT Rain)</p>
+                        <p><strong>Key Point:</strong> Exactly one statue + amulet + dry weather</p>
+                    </div>
+                    
+                    <div style="margin: 15px 0; padding: 15px; background: #fff3e0; border-radius: 8px;">
+                        <h4 style="color: #e65100;">Space Life Support (ADVANCED)</h4>
+                        <p><strong>Gates:</strong> OR + NOT + AND</p>
+                        <p><strong>Logic:</strong> Emergency = (Tank1 OR Tank2 Empty) AND (NOT SafeZone) AND Breach</p>
+                        <p><strong>Key Point:</strong> Resource problem + danger location + breach active</p>
+                    </div>
+                </div>
+                
+                <div style="background: #e8f5e9; padding: 20px; border-radius: 10px; margin-top: 20px;">
+                    <h4 style="color: #2e7d32; margin-bottom: 10px;">💡 Teaching Tip for All Solutions:</h4>
+                    <p style="color: #555; line-height: 1.8;">
+                        When reviewing student work, focus on the THOUGHT PROCESS rather than just the final answer. 
+                        Ask students to explain WHY they chose specific gates and how they determined the order. 
+                        Understanding the reasoning is more valuable than memorizing gate combinations.
+                    </p>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+    
+    <script>
+        function filterAnswers(level) {
+            const sections = document.querySelectorAll('.answer-section');
+            sections.forEach(section => {
+                if (level === 'all' || !section.dataset.level) {
+                    section.style.display = 'block';
+                } else if (section.dataset.level === level) {
+                    section.style.display = 'block';
+                } else {
+                    section.style.display = 'none';
+                }
+            });
+        }
+        
+        // Show all by default
+        document.addEventListener('DOMContentLoaded', function() {
+            filterAnswers('all');
+        });
+    </script>
+</body>
+</html>
