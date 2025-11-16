@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Logic Gates - Hands On Learning with micro:bit</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            max-width: 900px;
+            width: 100%;
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(90deg, #e74c3c 0%, #f39c12 33%, #3498db 66%, #3498db 100%);
+            padding: 5px 0;
+        }
+        
+        .logo-section {
+            background: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .logo-section img {
+            max-width: 300px;
+            height: auto;
+            margin-bottom: 20px;
+        }
+        
+        .title-section {
+            text-align: center;
+            padding: 40px 30px;
+            position: relative;
+        }
+        
+        .microbit-images {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+        
+        .microbit-img {
+            width: 150px;
+            height: 150px;
+            background: #000;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        
+        .microbit-placeholder {
+            color: #ff0000;
+            font-size: 48px;
+            font-weight: bold;
+        }
+        
+        .title-section h1 {
+            color: #e74c3c;
+            font-size: 3em;
+            margin-bottom: 10px;
+            line-height: 1.2;
+        }
+        
+        .title-section h2 {
+            color: #e74c3c;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        
+        .title-section h3 {
+            color: #e74c3c;
+            font-size: 2em;
+            margin-bottom: 20px;
+        }
+        
+        .title-section h4 {
+            color: #e74c3c;
+            font-size: 1.8em;
+        }
+        
+        .gate-symbols {
+            background: white;
+            border: 3px solid #3498db;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 30px auto;
+            max-width: 600px;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+        }
+        
+        .gate-box {
+            text-align: center;
+            padding: 10px;
+        }
+        
+        .gate-diagram {
+            width: 120px;
+            height: 80px;
+            border: 2px solid #333;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: white;
+            font-family: monospace;
+            font-size: 14px;
+        }
+        
+        .gate-label {
+            font-weight: bold;
+            color: #333;
+            margin-top: 5px;
+        }
+        
+        .links-section {
+            padding: 40px 30px;
+            background: #f8f9fa;
+        }
+        
+        .links-section h2 {
+            text-align: center;
+            color: #667eea;
+            margin-bottom: 30px;
+            font-size: 2em;
+        }
+        
+        .links-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .link-card {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: all 0.3s;
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+        
+        .link-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        }
+        
+        .link-icon {
+            font-size: 3em;
+            margin-bottom: 15px;
+        }
+        
+        .link-card h3 {
+            color: #667eea;
+            margin-bottom: 10px;
+            font-size: 1.4em;
+        }
+        
+        .link-card p {
+            color: #666;
+            line-height: 1.6;
+        }
+        
+        .hands-on-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            background: white;
+        }
+        
+        .hands-on-text {
+            padding: 40px;
+            background: #fff;
+        }
+        
+        .hands-on-text h2 {
+            color: #e74c3c;
+            font-size: 2em;
+            margin-bottom: 20px;
+        }
+        
+        .hands-on-text blockquote {
+            margin: 20px 0;
+            padding: 15px;
+            background: #f8f9fa;
+            border-left: 4px solid #667eea;
+            font-style: italic;
+            color: #555;
+        }
+        
+        .hands-on-text .author {
+            font-weight: bold;
+            color: #333;
+            font-style: normal;
+            display: block;
+            margin-top: 10px;
+        }
+        
+        .hands-on-image {
+            background: #3498db;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px;
+        }
+        
+        .hands-on-image img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+        
+        .image-placeholder {
+            width: 100%;
+            height: 300px;
+            background: #2980b9;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2em;
+        }
+        
+        .footer {
+            background: linear-gradient(90deg, #e74c3c 0%, #f39c12 33%, #3498db 66%, #3498db 100%);
+            padding: 5px 0;
+        }
+        
+        @media (max-width: 768px) {
+            .title-section h1 {
+                font-size: 2em;
+            }
+            
+            .title-section h2 {
+                font-size: 1.8em;
+            }
+            
+            .title-section h3 {
+                font-size: 1.5em;
+            }
+            
+            .microbit-images {
+                flex-direction: column;
+                gap: 20px;
+            }
+            
+            .gate-symbols {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .hands-on-section {
+                grid-template-columns: 1fr;
+            }
+            
+            .links-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header Stripe -->
+        <div class="header"></div>
+        
+        <!-- Logo Section -->
+        <div class="logo-section">
+            <div style="background: white; padding: 20px; display: inline-block;">
+                <div style="display: flex; align-items: center; justify-content: center; gap: 0;">
+                    <div style="width: 80px; height: 80px; background: #e74c3c; display: flex; align-items: center; justify-content: center; color: white; font-size: 3em;">✂</div>
+                    <div style="width: 80px; height: 80px; background: #f39c12; display: flex; align-items: center; justify-content: center; color: white; font-size: 3em;">⚙</div>
+                    <div style="width: 80px; height: 80px; background: #3498db; display: flex; align-items: center; justify-content: center; color: white; font-size: 3em;">💡</div>
+                </div>
+                <div style="margin-top: 10px; letter-spacing: 8px; font-weight: bold; color: #333; font-size: 1.2em;">CREATE · MAKE · LEARN</div>
+            </div>
+        </div>
+        
+        <!-- Title Section with micro:bit Images -->
+        <div class="title-section">
+            <div class="microbit-images">
+                <div class="microbit-img">
+                    <div class="microbit-placeholder">⊙⊙<br>━━</div>
+                </div>
+                
+                <div style="flex: 1; text-align: center;">
+                    <h1>Logic Gates</h1>
+                    <h2>A Hands on</h2>
+                    <h3>Learning Experience</h3>
+                    <h4>Using micro:Bits</h4>
+                </div>
+                
+                <div class="microbit-img">
+                    <div class="microbit-placeholder">⊙⊙<br>━━</div>
+                </div>
+            </div>
+            
+            <!-- Logic Gate Symbols -->
+            <div class="gate-symbols">
+                <div class="gate-box">
+                    <div class="gate-diagram">
+                        <div>A ─┤P0 ├─┐</div>
+                        <div>     ├─▷○─ Q</div>
+                        <div>B ─┤P1 ├─┘</div>
+                    </div>
+                    <div class="gate-label">~A</div>
+                </div>
+                
+                <div class="gate-box">
+                    <div class="gate-diagram">
+                        <div>A ─┤P0 ├─┐</div>
+                        <div>     ├─)─ Q</div>
+                        <div>B ─┤P1 ├─┘</div>
+                    </div>
+                    <div class="gate-label">A + B</div>
+                </div>
+                
+                <div class="gate-box">
+                    <div class="gate-diagram">
+                        <div>A ─┤P0 ├─┐</div>
+                        <div>     ├─D─ Q</div>
+                        <div>B ─┤P1 ├─┘</div>
+                    </div>
+                    <div class="gate-label">A · B</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Resource Links Section -->
+        <div class="links-section">
+            <h2>📚 Project Resources</h2>
+            
+            <div class="links-grid">
+                <a href="#" class="link-card" onclick="alert('Link to teacher slide deck'); return false;">
+                    <div class="link-icon">📊</div>
+                    <h3>Teacher Slide Deck</h3>
+                    <p>Presentation materials and teaching notes for delivering the lesson</p>
+                </a>
+                
+                <a href="#" class="link-card" onclick="alert('Link to full lesson plan'); return false;">
+                    <div class="link-icon">📝</div>
+                    <h3>Lesson Plan</h3>
+                    <p>Complete lesson plan with CSTA standards, objectives, and assessments</p>
+                </a>
+                
+                <a href="logic_gate_challenge_cards.html" class="link-card">
+                    <div class="link-icon">🎮</div>
+                    <h3>Challenge Cards</h3>
+                    <p>Interactive game design challenges for students (Easy, Standard, Advanced)</p>
+                </a>
+            </div>
+        </div>
+        
+        <!-- Hands-On Philosophy Section -->
+        <div class="hands-on-section">
+            <div class="hands-on-text">
+                <h2>Designed for learners who think with their hands</h2>
+                
+                <blockquote>
+                    "...our bodies and minds are connected.
+                    <br><br>
+                    We get excited about touching and feeling an idea that at one moment resides only in our minds and the next it's in our hands."
+                    <span class="author">Azi Jamalian, Columbia University</span>
+                </blockquote>
+                
+                <blockquote>
+                    "...sometimes our hands know before our minds know."
+                    <span class="author">Jay Silver, PhD - Founder of Joy Labz</span>
+                </blockquote>
+            </div>
+            
+            <div class="hands-on-image">
+                <div class="image-placeholder">
+                    Students working with circuits
+                </div>
+            </div>
+        </div>
+        
+        <!-- Footer Stripe -->
+        <div class="footer"></div>
+    </div>
+</body>
+</html>
